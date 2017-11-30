@@ -1,52 +1,42 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
+using WeatherAPI.Data;
 
 namespace WeatherAPI.Data
 {
     public class ConnectNOAA
     {
         public string Data { get; set; }
-        private readonly string Token = "YmGfnzXmuLVrtJtGWICQQxfKMxbOdMAF";
-
-        public string Request(string url, Dictionary<string, string> headers = null)
+        // makes open sockets reusable
+        private HttpClient client = new HttpClient();
+        
+        public string Request(string url)
         {
-            SendRequest(url, headers).Wait();
+            SendRequest(url).Wait();
             return this.Data;
         }
 
-        async Task SendRequest(string url, Dictionary<string, string> headers = null)
+        async Task SendRequest(string url)
         {
-            using (HttpClient client = new HttpClient())
+            // default header for authorization
+            client.DefaultRequestHeaders.Add("token", Token.Key);
+            // send request
+            try
             {
-                // default header for authorization
-                client.DefaultRequestHeaders.Add("token", this.Token);
-
-                // add all headers provided by user
-                if (headers != null && headers.Count > 0)
+                using (HttpResponseMessage response = await client.GetAsync(url))
                 {
-                    foreach (var item in headers)
+                    response.EnsureSuccessStatusCode(); // Throw if not success
+                    using(HttpContent tempContent = response.Content)
                     {
-                        client.DefaultRequestHeaders.Add(item.Key, item.Value);
+                        this.Data = await tempContent.ReadAsStringAsync();
                     }
                 }
-
-                // send request
-                try
-                {
-                    using (HttpResponseMessage response = await client.GetAsync(url))
-                    {
-                        response.EnsureSuccessStatusCode(); // Throw if not success
-                        using(HttpContent tempContent = response.Content)
-                        {
-                            this.Data = await tempContent.ReadAsStringAsync();
-                        }
-                    }
-                }
-                catch (HttpRequestException e)
-                {
-                    this.Data = ($"Request exception: {e.Message}");
-                }
+            }
+            catch (HttpRequestException e)
+            {
+                this.Data = $"Request exception: {e.Message}";
             }
         }
     }

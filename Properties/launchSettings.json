@@ -19,7 +19,7 @@
     "WeatherAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/stations",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

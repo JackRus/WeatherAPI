@@ -8,23 +8,23 @@ using WeatherAPI.Data;
 namespace WeatherAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class DataController : Controller
     {
         // GET api/values
         [HttpGet]
         public string Get()
         {
             var connect = new ConnectNOAA();
-            var response = connect.Request("https://www.ncdc.noaa.gov/cdo-web/api/v2/stations?locationid=ZIP%3A33139&limit=20&includemetadata=false&sortfield=name&sortorder=asc", null);
+            var response = connect.Request("https://www.ncdc.noaa.gov/cdo-web/api/v2/stations?locationid=ZIP%3A33139&limit=20&includemetadata=false&sortfield=name&sortorder=asc");
 
             return response;
-            //return new string[] { "jack1", "jack2" };
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
+            
             return "value";
         }
 
