@@ -8,5 +8,6 @@ namespace WeatherAPI.Data
         public static readonly string SortField = "name";
         public static readonly string SortOrder = "asc";
         public static readonly string Meta = "yes";
+        public static readonly int LocalMaxLimit = 10000;
     }
 }

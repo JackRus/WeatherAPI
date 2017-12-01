@@ -1,6 +1,7 @@
 using static System.Console;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace WeatherAPI.DataResponse
 {
@@ -13,20 +14,26 @@ namespace WeatherAPI.DataResponse
         }
 
         public List<Station> results { get; set; }
+
+        public override void excludeFields(string indexString) 
+        {
+            // null check
+            if (indexString == null) return;
+
+            // TODO TryParse
+            List<string> indexes = indexString.Split('-').ToList();
+
+            this.results.ForEach ( x => { 
+                if (indexes.Contains("1")) x.elevation = null;
+                if (indexes.Contains("2")) x.mindate = null;
+                if (indexes.Contains("3")) x.maxdate = null;
+                if (indexes.Contains("4")) x.latitude = null;
+                if (indexes.Contains("5")) x.name = null;
+                if (indexes.Contains("6")) x.datacoverage = null;
+                if (indexes.Contains("7")) x.id = null;
+                if (indexes.Contains("8")) x.elevationUnit = null;            
+                if (indexes.Contains("9")) x.longitude = null;
+            });
+        }
     }
 }
-
-
-// public void PrintToConsole()
-        // {
-        //     int count = 0;
-        //     this.results.ForEach( item => {
-        //         count ++;
-        //         WriteLine($"Item {count}");
-        //         item.GetType().GetProperties().ToList().ForEach(property =>
-        //         {
-        //             WriteLine($"{property.Name} = {property.GetValue(item)}");
-        //         });
-        //         WriteLine();
-        //     });
-        // }

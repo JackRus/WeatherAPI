@@ -11,14 +11,15 @@ namespace WeatherAPI.Data
         internal string EndPoint;
         protected readonly string EndPointBase = "https://www.ncdc.noaa.gov/cdo-web/api/v2/";
         
-        public string Limit { get; set; }
-        public string OffSet { get; set; }
+        public int Limit { get; set; }
+        public int OffSet { get; set; }
         public string From { get; set; }      
         public string To { get; set; }        
         public string SortBy { get; set; }      
         public string Order { get; set; }
         
         public abstract string BuildUrl ();
+        public abstract string prepareData (ConnectNOAA connect);
         
         public void checkUrl()
         {
